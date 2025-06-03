@@ -209,6 +209,226 @@ portfolio-vue/
 - 适当添加错误处理
 - 确保组件可复用性
 
+#### 组件开发最佳实践
+
+**组件命名规范**：
+
+- 避免使用 HTML 保留名称（如 `Footer`），推荐使用多词组合（如 `AppFooter`）
+- 组件名采用 PascalCase，文件名采用 kebab-case
+- 确保组件名称语义化，便于理解和维护
+
+**样式优化建议**：
+
+- 避免使用不存在的 Tailwind CSS 类（如 `text-gold-400`）
+- 优先使用标准 CSS 属性而非 `@apply` 指令，提高兼容性
+- 使用 CSS 变量统一管理主题色彩，便于全局调整
+- 移除空的 CSS 规则集，保持代码整洁
+
+**代码结构优化**：
+
+- 将配置数据外部化，使用独立的配置文件管理
+- 对于非响应式数据，使用 `shallowRef` 优化性能
+- 合理使用 Vue 3 Composition API，提高代码可读性
+- 添加适当的 TypeScript 类型定义（可选）
+
+**可访问性改进**：
+
+- 为交互元素添加 ARIA 标签
+- 确保键盘导航支持
+- 提供合适的焦点指示器
+- 使用语义化 HTML 标签
+
+#### 组件使用示例
+
+**MainLayout 主布局组件**：
+
+```vue
+<!-- 基础使用 -->
+<template>
+  <MainLayout>
+    <template #header>
+      <NavBar />
+    </template>
+
+    <template #main>
+      <PageContainer title="首页" subtitle="欢迎来到我的作品集">
+        <!-- 页面内容 -->
+      </PageContainer>
+    </template>
+
+    <template #footer>
+      <AppFooter />
+    </template>
+  </MainLayout>
+</template>
+
+<script>
+import MainLayout from "@/components/MainLayout.vue";
+import NavBar from "@/components/NavBar.vue";
+import AppFooter from "@/components/Footer.vue";
+import PageContainer from "@/components/PageContainer.vue";
+
+export default {
+  components: {
+    MainLayout,
+    NavBar,
+    AppFooter,
+    PageContainer,
+  },
+};
+</script>
+```
+
+**NavBar 导航栏组件**：
+
+```vue
+<!-- 在页面中使用导航栏 -->
+<template>
+  <NavBar />
+</template>
+
+<script>
+import NavBar from "@/components/NavBar.vue";
+
+export default {
+  components: {
+    NavBar,
+  },
+};
+</script>
+```
+
+**AppFooter 页脚组件**：
+
+```vue
+<!-- 在页面中使用页脚 -->
+<template>
+  <AppFooter />
+</template>
+
+<script>
+import AppFooter from "@/components/Footer.vue";
+
+export default {
+  components: {
+    AppFooter,
+  },
+};
+</script>
+```
+
+**PageContainer 页面容器组件**：
+
+```vue
+<!-- 基础使用 -->
+<template>
+  <PageContainer title="作品展示" subtitle="我的创意作品集合">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 作品内容 -->
+    </div>
+  </PageContainer>
+</template>
+
+<!-- 高级配置 -->
+<template>
+  <PageContainer
+    title="关于我"
+    subtitle="了解更多关于我的信息"
+    :show-header="true"
+    :show-footer="true"
+    max-width="4xl"
+    padding="lg"
+    :fullscreen="false"
+    background="gradient"
+  >
+    <div class="prose prose-invert max-w-none">
+      <!-- 页面内容 -->
+    </div>
+
+    <template #footer>
+      <div class="text-center text-gray-400 text-sm">最后更新：2024年12月</div>
+    </template>
+  </PageContainer>
+</template>
+
+<script>
+import PageContainer from "@/components/PageContainer.vue";
+
+export default {
+  components: {
+    PageContainer,
+  },
+};
+</script>
+```
+
+**完整页面示例**：
+
+```vue
+<!-- views/HomePage.vue -->
+<template>
+  <MainLayout>
+    <template #header>
+      <NavBar />
+    </template>
+
+    <template #main>
+      <PageContainer
+        title="农淑惠"
+        subtitle="广告学专业 | 创意设计师"
+        background="gradient"
+      >
+        <!-- 个人介绍区域 -->
+        <section class="mb-16">
+          <div class="text-center">
+            <img
+              src="/avatar.jpg"
+              alt="农淑惠"
+              class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-gold-500"
+            />
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+              专注于MG动画、视频剪辑和平面设计的创意工作者，
+              致力于用视觉艺术传达美好故事。
+            </p>
+          </div>
+        </section>
+
+        <!-- 特色作品展示 -->
+        <section>
+          <h2 class="text-2xl font-bold text-white mb-8 text-center">
+            特色作品
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 作品卡片将在后续开发 -->
+          </div>
+        </section>
+      </PageContainer>
+    </template>
+
+    <template #footer>
+      <AppFooter />
+    </template>
+  </MainLayout>
+</template>
+
+<script>
+import MainLayout from "@/components/MainLayout.vue";
+import NavBar from "@/components/NavBar.vue";
+import AppFooter from "@/components/Footer.vue";
+import PageContainer from "@/components/PageContainer.vue";
+
+export default {
+  name: "HomePage",
+  components: {
+    MainLayout,
+    NavBar,
+    AppFooter,
+    PageContainer,
+  },
+};
+</script>
+```
+
 ## 性能优化规范
 
 ### 图片优化
